@@ -11,9 +11,15 @@ Just require the "FractionsToWords.php" class and use the convert() function.
 
 Example:
 
-	require 'FractionsToWords.php';
-	$FractionsToWords = new FractionsToWords();
-	echo $FractionsToWords->convert('1/2');
+	<?php
+		
+		require 'FractionsToWords.php';
+		$FractionsToWords = new FractionsToWords();
+		echo $FractionsToWords->convert('1/2');
+		
+		// Output: one half
+		
+	?>
 
 I love it but would you add/fix 'that'?
 ---------------------------------------
