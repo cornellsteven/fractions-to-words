@@ -1,11 +1,11 @@
-What is it?
-===========
+Fractions To Words
+==================
 
 A php class to convert fractions to English words. 
-(IE, "1/2" = "one half", "3/16" = "three sixteenths")
+(IE, "1/2" = "one-half", "3/16" = "three-sixteenths")
 
-How do I use it?
-----------------
+Usage
+-----
 
 Just require the "FractionsToWords.php" class and use the convert() function.
 
@@ -21,7 +21,5 @@ Example:
 		
 	?>
 
-I love it but would you add/fix 'that'?
----------------------------------------
-
-Just open an issue on Github and I will fix/add it if it makes sense.
+* * *
+If you see a mistakes or have any additions / fixes that you would like implemented, please let me know.

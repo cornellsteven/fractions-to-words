@@ -8,6 +8,9 @@
 	*
 	* Special thanks to @Lamped (http://www.codingforums.com/archive/index.php/t-180473.html)
 	* for direction on converting numbers to ordinal words
+	*
+	* @author		Cornell Campbell (cornellsteven@gmail.com)
+	* @copyright	Copyright 2012 Cornell Campbell
 	*/
 	class FractionsToWords
 	{
@@ -20,8 +23,6 @@
 		/**
 		 * Array of names large numbers
 		 * Source: Wikipedia (http://en.wikipedia.org/wiki/Names_of_large_numbers)
-		 *
-		 * @author cornellcampbell
 		 */
 		private static $scale = array(
 			'', 'thousand', 'million', 'billion', 'trillion', 'quadrillion', 
@@ -33,8 +34,6 @@
 		
 		/**
 		 * An array of cardinal numbers 0 - 19
-		 *
-		 * @author cornellcampbell
 		 */
 		private static $cardinals = array(
 			'', 'one', 'two', 'three', 'four', 'five', 'six', 'seven',
@@ -44,8 +43,6 @@
 		
 		/**
 		 * An array of ordinal numbers 0 - 19
-		 *
-		 * @author cornellcampbell
 		 */
 		private static $ordinals = array(
 			'', 'first', 'second', 'third', 'fourth', 'fifth', 'sixth',
@@ -56,8 +53,6 @@
 		
 		/**
 		 * An array of cardinal numbers by tens: 20 - 90
-		 *
-		 * @author cornellcampbell
 		 */
 		private static $tensCardinals = array(
 			'', '', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 
@@ -66,8 +61,6 @@
 		
 		/**
 		 * An array of ordinal numbers by tens: 20th - 90th
-		 *
-		 * @author cornellcampbell
 		 */
 		private static $tensOrdinals = array(
 			'', '', 'twentieth', 'thirtieth', 'fortieth', 'fiftieth', 'sixtieth', 
@@ -79,7 +72,6 @@
 		 *
 		 * @param string $fraction 
 		 * @return void
-		 * @author cornellcampbell
 		 */
 		public function convert($fraction) {
 			
@@ -91,11 +83,8 @@
 			
 			// Get parts of fraction
 			$parts = explode(' ', $fraction);
-			if (count($parts) > 2) {
-				// throw new Exception('Not a valid fraction.');
-				
-				// If this does not appear to be an actual fraction, just 
-				// return the original input string
+			if (count($parts) > 2 || strpos('/', $this->fraction) === false) {
+				// If this does not appear to be an actual fraction, just return the original input string
 				return $this->fraction;
 			} else if (count($parts) === 2) {
 				$this->whole_number = $parts[0];
@@ -150,7 +139,6 @@
 		 *
 		 * @param string $number 
 		 * @return void
-		 * @author cornellcampbell
 		 */
 		private static function floatToArray($number) {
 			return str_split(str_pad($number, ceil(strlen($number)/3)*3, '0', STR_PAD_LEFT), 3);
@@ -161,7 +149,6 @@
 		 *
 		 * @param string $number 
 		 * @return void
-		 * @author cornellcampbell
 		 */
 		private static function numberToEnglish($number) {
 			$hundreds = floor($number / 100);
@@ -189,7 +176,6 @@
 		 *
 		 * @param string $number 
 		 * @return void
-		 * @author cornellcampbell
 		 */
 		private static function numberToCardinal($number) {
 			if ($number === false) { return false; }
@@ -217,7 +203,6 @@
 		 *
 		 * @param string $number 
 		 * @return void
-		 * @author cornellcampbell
 		 */
 		private static function numberToOrdinal($number) {
 			return trim(self::cardinalToOrdinal(self::numberToCardinal($number)));
@@ -228,7 +213,6 @@
 		 *
 		 * @param string $cardinal 
 		 * @return void
-		 * @author cornellcampbell
 		 */
 		private static function cardinalToOrdinal($cardinal) {
 			$cardinal = trim($cardinal);
