@@ -83,7 +83,7 @@
 			
 			// Get parts of fraction
 			$parts = explode(' ', $fraction);
-			if (count($parts) > 2 || strpos('/', $this->fraction) === false) {
+			if (count($parts) > 2 || strpos($this->fraction, '/') === false) {
 				// If this does not appear to be an actual fraction, just return the original input string
 				return $this->fraction;
 			} else if (count($parts) === 2) {
