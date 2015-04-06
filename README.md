@@ -13,10 +13,9 @@ Example:
 
 ```php
 require 'FractionsToWords.php';
-$FractionsToWords = new FractionsToWords();
-echo $FractionsToWords->convert('1/2');
 
-// Output: one half
+echo FractionsToWords::convert('1/2');      // outputs "one half"
+echo FractionsToWords::convert('5 1/4');    // outputs "5 and one-fourth"
 ```
 
 * * *
