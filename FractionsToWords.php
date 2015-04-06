@@ -76,17 +76,25 @@ class FractionsToWords {
         'seventieth', 'eightieth', 'ninetieth',
     );
     
+    /**
+     * Main function to convert a fraction to words
+     *
+     * @param string $fraction 
+     * @return string
+     */
     public static function convert($fraction) {
         self::$fraction = $fraction;
-            
+        
         // Clean up input
         $fraction = trim($fraction);
         $fraction = preg_replace('/\s+/', ' ', $fraction);
-            
+        
         // Get parts of fraction
         $parts = explode(' ', $fraction);
-        if (count($parts) > 2 || strpos(self::$fraction, '/') === FALSE) {
-            // If this does not appear to be an actual fraction, just return the original input string
+        
+        if (FALSE == strpos(self::$fraction, '/') || count($parts) > 2) {
+            // If this does not appear to be an actual fraction, 
+            // just return the original input string
             return self::$fraction;
         } else if (count($parts) === 2) {
             self::$whole_number = $parts[0];
@@ -95,28 +103,21 @@ class FractionsToWords {
             $fraction = $parts[0];
         }
         
-        self::$numerator = reset(explode('/', $fraction));
+        self::$numerator   = reset(explode('/', $fraction));
         self::$denominator = end(explode('/', $fraction));
         
         // Convert numbers to words
         $whole_number = self::numberToCardinal(self::$whole_number);
-        $numerator = self::numberToCardinal(self::$numerator);
+        $numerator    = self::numberToCardinal(self::$numerator);
         
         if (self::$denominator == 2) {
-            if (self::$numerator > 1) {
-                $denominator = 'halves';
-            } else {
-                $denominator = 'half';
-            }
+            $denominator = ( self::$numerator > 1 ? 'halves' : 'half' );
         } else {
             $denominator = self::numberToOrdinal(self::$denominator);
         }
-            
-        if (count(explode('-', $denominator)) < 2) {
-            $fraction = $numerator . '-' . $denominator;
-        } else {
-            $fraction = $numerator . ' ' . $denominator;
-        }
+        
+        $glue     = ( count(explode('-', $denominator)) < 2 ? '-' : ' ' );
+        $fraction = $numerator . $glue . $denominator;
         $fraction = str_replace(' -', '-', $fraction);
         
         if (self::$numerator > 1 && self::$denominator != 2) {
@@ -129,40 +130,37 @@ class FractionsToWords {
         }
         
         return trim($fraction);
-            
     }
     
     /**
-    * Turns a number into an array containing sections of a number (as strings)
-    * 
-    * Example: 
-    * 1234567 becomes: 
-    * array(
-    *         '001', '234', '567'
-    * );
-    *
-    * @param string $number 
-    * @return void
-    */
+     * Turns a number into an array containing sections of a number (as strings)
+     *
+     * For example, 1234567 would become:
+     * ['001', '234', '567']
+     *
+     * @param mixed $number 
+     * @return array
+     */
     private static function floatToArray($number) {
-        return str_split(str_pad($number, ceil(strlen($number)/3)*3, '0', STR_PAD_LEFT), 3);
+        return str_split(str_pad($number, ceil(strlen($number) / 3) * 3, '0', STR_PAD_LEFT), 3);
     }
     
     /**
-    * Converts a number into english words
-    *
-    * @param string $number 
-    * @return void
-    */
+     * Converts a number into english words
+     *
+     * @param mixed $number
+     * @return string
+     */
     private static function numberToEnglish($number) {
         $hundreds = floor($number / 100);
-        $tens = $number % 100;
-        $pre = ($hundreds ? self::$cardinals[$hundreds].' hundred' : '');
+        $tens     = ($number % 100);
+        $pre      = ($hundreds ? self::$cardinals[$hundreds] . ' hundred' : '');
         
         if ($tens < 20) {
             $post = self::$cardinals[$tens];
         } else {
             $post = trim(self::$tensCardinals[floor($tens / 10)]);
+            
             if ( ! empty(self::$cardinals[$tens % 10])) {
                 $post .= '-' . self::$cardinals[$tens % 10];
             }
@@ -172,63 +170,66 @@ class FractionsToWords {
             return trim("$pre $post");
         }
         
-        return trim($pre.$post);
+        return trim($pre . $post);
     }
     
     /**
-    * Converts an number into a English cardinal words 
-    *
-    * @param string $number 
-    * @return void
-    */
+     * Converts an number into a English cardinal words 
+     *
+     * @param mixed $number
+     * @return string
+     */
     private static function numberToCardinal($number) {
-        if ($number === FALSE) { return FALSE; }
+        if ($number === FALSE) {
+            return FALSE;
+        }
         
         $int = array_reverse(self::floatToArray($number));
-        
         for ($i = count($int)-1; $i > -1; $i--) {
-            $englishnumber = self::numberToEnglish($int[$i]);
-            if ($englishnumber) {
-                $english[] = $englishnumber.' '.self::$scale[$i];
+            $englishNumber = self::numberToEnglish($int[$i]);
+            
+            if ($englishNumber) {
+                $english[] = $englishNumber . ' ' . self::$scale[$i];
             }
         }
+        
         $post = array_pop($english);
-        $pre = implode(' ', $english);
+        $pre  = implode(' ', $english);
         
         if ($pre && $post) {
             $cardinal = trim("$pre $post");
         } else {
-            $cardinal = $pre.$post;
+            $cardinal = $pre . $post;
         }
         
         return trim($cardinal);
     }
     
     /**
-    * Converts a number into English ordinal words
-    *
-    * @param string $number 
-    * @return void
-    */
+     * Converts a number into English ordinal words
+     *
+     * @param mixed $number 
+     * @return string
+     */
     private static function numberToOrdinal($number) {
         return trim(self::cardinalToOrdinal(self::numberToCardinal($number)));
     }
     
     /**
-    * Converts a English-words cardinal number into English ordinal words
-    *
-    * @param string $cardinal 
-    * @return void
-    */
+     * Converts a English-words cardinal number into English ordinal words
+     *
+     * @param string $cardinal 
+     * @return string
+     */
     private static function cardinalToOrdinal($cardinal) {
         $cardinal = trim($cardinal);
-        $words = explode(' ', $cardinal);
-        $last = &$words[count($words)-1];
+        $words    = explode(' ', $cardinal);
+        $last     = &$words[count($words)-1];
         
-        if (strpos($last, '-') !== FALSE) {
+        if (FALSE !== strpos($last, '-')) {
             $last_two = explode('-', $last);
-            $pre = $last_two[0];
-            $last = $last_two[1];
+            $pre      = $last_two[0];
+            $last     = $last_two[1];
         }
         
         if (in_array($last, self::$cardinals)) {
@@ -244,7 +245,7 @@ class FractionsToWords {
         }
         
         if (count($words) > 1) {
-            if (strpos($words[count($words)-1], '-') === FALSE) {
+            if (FALSE === strpos($words[count($words)-1], '-')) {
                 $last = array_pop($words);
                 $words[count($words)-1] = $words[count($words)-1] . '-' . $last;
             }

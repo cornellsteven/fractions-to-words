@@ -11,15 +11,15 @@ Just require the "FractionsToWords.php" class and use the convert() function.
 
 Example:
 
-	<?php
-		
-		require 'FractionsToWords.php';
-		$FractionsToWords = new FractionsToWords();
-		echo $FractionsToWords->convert('1/2');
-		
-		// Output: one half
-		
-	?>
+    <?php
+        
+        require 'FractionsToWords.php';
+        $FractionsToWords = new FractionsToWords();
+        echo $FractionsToWords->convert('1/2');
+        
+        // Output: one half
+        
+    ?>
 
 * * *
 If you see a mistakes or have any additions / fixes that you would like implemented, please let me know.
